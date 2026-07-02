@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Staff Registration</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+padding:30px;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+
+}
+
+.container{
+
+width:100%;
+max-width:700px;
+background:#fff;
+padding:30px;
+border-radius:15px;
+box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+}
+
+h2{
+
+text-align:center;
+color:#0b6b36;
+margin-bottom:25px;
+
+}
+
+.row{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+
+}
+
+.form-group{
+
+margin-bottom:18px;
+
+}
+
+label{
+
+display:block;
+margin-bottom:6px;
+font-weight:600;
+color:#333;
+
+}
+
+input,
+select,
+textarea{
+
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:15px;
+outline:none;
+transition:.3s;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+border-color:#0b6b36;
+box-shadow:0 0 8px rgba(11,107,54,.25);
+
+}
+
+textarea{
+
+resize:vertical;
+height:90px;
+
+}
+
+.preview{
+
+width:140px;
+height:140px;
+border:2px dashed #bbb;
+border-radius:10px;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+margin-bottom:10px;
+background:#fafafa;
+
+}
+
+.preview img{
+
+width:100%;
+height:100%;
+object-fit:cover;
+
+}
+
+button{
+
+width:100%;
+padding:15px;
+border:none;
+background:#0b6b36;
+color:#fff;
+font-size:17px;
+font-weight:600;
+border-radius:8px;
+cursor:pointer;
+transition:.3s;
+
+}
+
+button:hover{
+
+background:#084d27;
+
+}
+
+.message{
+
+display:none;
+margin-top:20px;
+padding:12px;
+border-radius:6px;
+font-weight:600;
+text-align:center;
+
+}
+
+.success{
+
+background:#d4edda;
+color:#155724;
+
+}
+
+.error{
+
+background:#f8d7da;
+color:#721c24;
+
+}
+
+@media(max-width:650px){
+
+.row{
+
+grid-template-columns:1fr;
+
+}
+
+.container{
+
+padding:20px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Staff Registration</h2>
+
+<form id="staffForm">
+
+<div class="form-group">
+
+<label>Staff Photo</label>
+
+<div class="preview">
+
+<img id="photoPreview">
+
+</div>
+
+<input
+type="file"
+id="staffPhoto"
+accept="image/*">
+
+</div>
+
+<div class="row">
+
+<div class="form-group">
+
+<label>Full Name</label>
+
+<input
+type="text"
+id="name"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Staff ID</label>
+
+<input
+type="text"
+id="staffId"
+readonly>
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="form-group">
+
+<label>Place</label>
+
+<select id="place" required>
+
+<option value="">Select Place</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Date of Birth</label>
+
+<input
+type="date"
+id="dob">
+
+</div>
+
+<div class="form-group">
+
+<label>Phone Number</label>
+
+<input
+type="tel"
+id="phone"
+maxlength="10">
+
+</div>
+
+</div>
+
+<div class="form-group">
+
+<label>Address</label>
+
+<textarea id="address"></textarea>
+
+</div>
+
+<div class="row">
+
+<div class="form-group">
+
+<label>Aadhaar Number</label>
+
+<input
+type="text"
+id="aadhaar"
+maxlength="12">
+
+</div>
+
+<div class="form-group">
+
+<label>Join Date</label>
+
+<input
+type="date"
+id="joinDate">
+
+</div>
+
+</div>
+
+<div class="form-group">
+
+<label>Aadhaar Photo</label>
+
+<input
+type="file"
+id="aadhaarPhoto"
+accept="image/*">
+
+</div>
+
+<div class="row">
+
+<div class="form-group">
+
+<label>Job Type</label>
+
+<select id="jobType">
+
+<option value="">Select</option>
+
+<option>Full Time</option>
+
+<option>Part Time</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Salary</label>
+
+<input
+type="number"
+id="salary">
+
+</div>
+
+</div>
+
+<div class="form-group">
+
+<label>Password</label>
+
+<input
+type="password"
+id="password">
+
+</div>
+
+<button type="submit">
+
+Register Staff
+
+</button>
+
+<div
+id="msg"
+class="message">
+
+</div>
+
+</form>
+
+</div>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+query,
+orderBy,
+limit,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+import {
+getStorage,
+ref,
+uploadBytes,
+getDownloadURL
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-storage.js";
+
+const firebaseConfig={
+
+apiKey:"AIzaSyDjdeOUbsilqnLaXMGq-ruL4cV9epZuFRs",
+authDomain:"a1business-55e5a.firebaseapp.com",
+projectId:"a1business-55e5a",
+storageBucket:"a1business-55e5a.firebasestorage.app",
+messagingSenderId:"1067978149348",
+appId:"1:1067978149348:web:c8c6ea7390b571ffc24bf1"
+
+};
+
+const app=initializeApp(firebaseConfig);
+
+const db=getFirestore(app);
+
+const storage=getStorage(app);
+
+const staffPhoto=document.getElementById("staffPhoto");
+
+const aadhaarPhoto=document.getElementById("aadhaarPhoto");
+
+const preview=document.getElementById("photoPreview");
+
+const jobType=document.getElementById("jobType");
+
+const salary=document.getElementById("salary");
+
+const place=document.getElementById("place");
+
+const msg=document.getElementById("msg");
+
+staffPhoto.onchange=e=>{
+
+const file=e.target.files[0];
+
+if(file){
+
+preview.src=URL.createObjectURL(file);
+
+}
+
+};
+
+jobType.onchange=()=>{
+
+if(jobType.value=="Full Time"){
+
+salary.value=15000;
+
+}
+
+else if(jobType.value=="Part Time"){
+
+salary.value=10500;
+
+}
+
+else{
+
+salary.value="";
+
+}
+
+};
+
+async function loadPlaces(){
+
+place.innerHTML='<option value="">Select Place</option>';
+
+const snapshot=await getDocs(collection(db,"places"));
+
+snapshot.forEach(doc=>{
+
+const data=doc.data();
+
+place.innerHTML += `
+<option value="${data.name}">
+${data.name}
+</option>`;
+
+});
+
+const selectedPlace=localStorage.getItem("selectedPlace");
+
+if(selectedPlace){
+
+place.value=selectedPlace;
+
+}
+
+}
+
+async function generateStaffID(){
+
+const q=query(
+
+collection(db,"staff"),
+
+orderBy("staffId","desc"),
+
+limit(1)
+
+);
+
+const snap=await getDocs(q);
+
+if(snap.empty){
+
+document.getElementById("staffId").value="A1001";
+
+return;
+
+}
+
+const last=snap.docs[0].data().staffId;
+
+const num=parseInt(last.replace("A",""))+1;
+
+document.getElementById("staffId").value="A"+num;
+
+}
+
+generateStaffID();
+
+loadPlaces();
+
+document.getElementById("staffForm").addEventListener("submit",async(e)=>{
+
+e.preventDefault();
+
+try{
+
+let staffPhotoURL="";
+
+let aadhaarPhotoURL="";
+
+if(staffPhoto.files.length){
+
+const file=staffPhoto.files[0];
+
+const storageRef=ref(storage,"staff/"+Date.now()+"_"+file.name);
+
+await uploadBytes(storageRef,file);
+
+staffPhotoURL=await getDownloadURL(storageRef);
+
+}
+
+if(aadhaarPhoto.files.length){
+
+const file=aadhaarPhoto.files[0];
+
+const storageRef=ref(storage,"aadhaar/"+Date.now()+"_"+file.name);
+
+await uploadBytes(storageRef,file);
+
+aadhaarPhotoURL=await getDownloadURL(storageRef);
+
+}
+
+await addDoc(collection(db,"staff"),{
+
+staffId:document.getElementById("staffId").value,
+
+name:document.getElementById("name").value,
+
+place:place.value,
+
+dob:document.getElementById("dob").value,
+
+phone:document.getElementById("phone").value,
+
+address:document.getElementById("address").value,
+
+aadhaarNumber:document.getElementById("aadhaar").value,
+
+joinDate:document.getElementById("joinDate").value,
+
+jobType:jobType.value,
+
+salary:Number(salary.value),
+
+password:document.getElementById("password").value,
+
+photo:staffPhotoURL,
+
+aadhaarPhoto:aadhaarPhotoURL,
+
+status:"Active",
+
+createdAt:serverTimestamp()
+
+});
+
+msg.style.display="block";
+
+msg.className="message success";
+
+msg.innerHTML="Staff Registered Successfully";
+
+document.getElementById("staffForm").reset();
+
+preview.src="";
+
+salary.value="";
+
+generateStaffID();
+
+}
+catch(err){
+
+msg.style.display="block";
+
+msg.className="message error";
+
+msg.innerHTML=err.message;
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

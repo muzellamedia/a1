@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A1 Business Solutions - Shop List</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#eef5ef,#f8fbff);
+color:#1d2b22;
+min-height:100vh;
+padding:24px;
+}
+
+.page{
+max-width:1300px;
+margin:0 auto;
+}
+
+.hero{
+background:linear-gradient(135deg,#0b6b36,#14864b);
+color:#fff;
+padding:28px;
+border-radius:20px;
+box-shadow:0 18px 40px rgba(11,107,54,.18);
+margin-bottom:22px;
+}
+
+.hero h1{
+font-size:30px;
+margin-bottom:8px;
+}
+
+.hero p{
+font-size:15px;
+opacity:.92;
+}
+
+.toolbar{
+display:grid;
+grid-template-columns:1.2fr 1fr 1.2fr;
+gap:16px;
+background:#fff;
+padding:18px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(20,40,30,.08);
+margin-bottom:18px;
+}
+
+.field label{
+display:block;
+font-size:14px;
+font-weight:600;
+margin-bottom:7px;
+color:#365341;
+}
+
+.field input,
+.field select{
+width:100%;
+padding:13px 14px;
+border:1px solid #d5dfd9;
+border-radius:12px;
+outline:none;
+font-size:15px;
+background:#fbfdfb;
+}
+
+.field input:focus,
+.field select:focus{
+border-color:#0b6b36;
+box-shadow:0 0 0 4px rgba(11,107,54,.12);
+}
+
+.panel{
+background:#fff;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(20,40,30,.08);
+overflow:hidden;
+}
+
+.tableWrap{
+overflow:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:980px;
+}
+
+th,
+td{
+padding:16px 14px;
+text-align:left;
+border-bottom:1px solid #edf1ee;
+font-size:14px;
+vertical-align:middle;
+}
+
+th{
+background:#f5faf6;
+color:#365341;
+font-size:13px;
+text-transform:uppercase;
+letter-spacing:.03em;
+}
+
+tbody tr:hover{
+background:#fbfefb;
+}
+
+.muted{
+color:#74857a;
+}
+
+.badge{
+display:inline-flex;
+align-items:center;
+padding:7px 11px;
+border-radius:999px;
+font-size:12px;
+font-weight:600;
+}
+
+.badge.active{
+background:#ddf6e7;
+color:#0f7a3e;
+}
+
+.badge.inactive{
+background:#f6e6d8;
+color:#9b5f1c;
+}
+
+.actionBtn,
+.primaryBtn,
+.secondaryBtn{
+border:none;
+cursor:pointer;
+border-radius:12px;
+font-weight:600;
+transition:.25s;
+}
+
+.actionBtn{
+background:#0b6b36;
+color:#fff;
+padding:10px 14px;
+font-size:13px;
+}
+
+.actionBtn:hover,
+.primaryBtn:hover{
+background:#084d27;
+}
+
+.secondaryBtn{
+background:#edf3ee;
+color:#244232;
+padding:12px 16px;
+}
+
+.primaryBtn{
+background:#0b6b36;
+color:#fff;
+padding:12px 18px;
+}
+
+.emptyState{
+padding:34px 20px;
+text-align:center;
+color:#74857a;
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(13,23,18,.45);
+display:none;
+justify-content:center;
+align-items:center;
+padding:20px;
+z-index:50;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modalCard{
+width:100%;
+max-width:480px;
+background:#fff;
+border-radius:20px;
+padding:24px;
+box-shadow:0 24px 50px rgba(0,0,0,.18);
+}
+
+.modalCard h3{
+font-size:24px;
+margin-bottom:8px;
+color:#163b25;
+}
+
+.modalCard p{
+font-size:14px;
+color:#617468;
+margin-bottom:18px;
+}
+
+.paymentType{
+display:flex;
+gap:18px;
+margin-top:10px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.checkItem{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:15px;
+font-weight:500;
+color:#355240;
+}
+
+.checkItem input{
+width:18px;
+height:18px;
+accent-color:#0b6b36;
+}
+
+.modalActions{
+display:flex;
+gap:12px;
+justify-content:flex-end;
+}
+
+.message{
+display:none;
+margin-bottom:16px;
+padding:12px 14px;
+border-radius:12px;
+font-size:14px;
+font-weight:600;
+}
+
+.message.success{
+display:block;
+background:#dff4e5;
+color:#106c39;
+}
+
+.message.error{
+display:block;
+background:#f9dfe2;
+color:#8f2330;
+}
+
+@media(max-width:900px){
+.toolbar{
+grid-template-columns:1fr;
+}
+}
+
+@media(max-width:640px){
+body{
+padding:16px;
+}
+
+.hero{
+padding:22px;
+}
+
+.hero h1{
+font-size:24px;
+}
+
+.modalActions{
+flex-direction:column-reverse;
+}
+
+.secondaryBtn,
+.primaryBtn{
+width:100%;
+}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="hero">
+<h1>Shop List</h1>
+<p>View shops by place, search quickly, sort by expiry or date added, and activate plans from one screen.</p>
+</div>
+
+<div id="pageMessage" class="message"></div>
+
+<div class="toolbar">
+<div class="field">
+<label>Select Place</label>
+<select id="placeFilter">
+<option value="">Select Place</option>
+</select>
+</div>
+
+<div class="field">
+<label>Sort By</label>
+<select id="sortBy">
+<option value="expiry">Plan Expiry</option>
+<option value="dateAdded">Date Added</option>
+</select>
+</div>
+
+<div class="field">
+<label>Search Shop</label>
+<input type="text" id="searchBox" placeholder="Search by shop name / landmark / phone">
+</div>
+</div>
+
+<div class="panel">
+<div class="tableWrap">
+<table>
+<thead>
+<tr>
+<th>Shop Name</th>
+<th>Landmark</th>
+<th>Phone Number</th>
+<th>Plan Type</th>
+<th>Expiry Date</th>
+<th>Remaining Days</th>
+<th>Active Plan</th>
+</tr>
+</thead>
+<tbody id="shopTableBody">
+<tr>
+<td colspan="7" class="emptyState">Loading shops...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="modal" id="planModal">
+<div class="modalCard">
+<h3>Activate Plan</h3>
+<p id="modalShopName">Shop details</p>
+
+<div class="field">
+<label>Payment Amount</label>
+<input type="number" id="paymentAmount" min="0">
+</div>
+
+<div class="field">
+<label>Payment Type</label>
+<div class="paymentType">
+<label class="checkItem">
+<input type="checkbox" id="paymentCash">
+Cash
+</label>
+<label class="checkItem">
+<input type="checkbox" id="paymentOnline">
+Online
+</label>
+</div>
+</div>
+
+<div class="modalActions">
+<button type="button" class="secondaryBtn" id="closeModalBtn">Cancel</button>
+<button type="button" class="primaryBtn" id="activatePlanBtn">Active Plan</button>
+</div>
+</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import {
+getFirestore,
+collection,
+getDocs,
+doc,
+updateDoc,
+Timestamp
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+const firebaseConfig={
+apiKey:"AIzaSyDjdeOUbsilqnLaXMGq-ruL4cV9epZuFRs",
+authDomain:"a1business-55e5a.firebaseapp.com",
+projectId:"a1business-55e5a",
+storageBucket:"a1business-55e5a.firebasestorage.app",
+messagingSenderId:"1067978149348",
+appId:"1:1067978149348:web:c8c6ea7390b571ffc24bf1"
+};
+
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+
+const placeFilter=document.getElementById("placeFilter");
+const sortBy=document.getElementById("sortBy");
+const searchBox=document.getElementById("searchBox");
+const shopTableBody=document.getElementById("shopTableBody");
+const pageMessage=document.getElementById("pageMessage");
+const planModal=document.getElementById("planModal");
+const modalShopName=document.getElementById("modalShopName");
+const paymentAmount=document.getElementById("paymentAmount");
+const paymentCash=document.getElementById("paymentCash");
+const paymentOnline=document.getElementById("paymentOnline");
+const closeModalBtn=document.getElementById("closeModalBtn");
+const activatePlanBtn=document.getElementById("activatePlanBtn");
+
+let shopsData=[];
+let activeShop=null;
+
+function showMessage(text,type){
+pageMessage.className="message "+type;
+pageMessage.textContent=text;
+
+setTimeout(()=>{
+pageMessage.className="message";
+pageMessage.textContent="";
+},3000);
+}
+
+function formatDate(value){
+if(!value){
+return "-";
+}
+
+const rawDate=value.seconds ? new Date(value.seconds*1000) : new Date(value);
+
+if(Number.isNaN(rawDate.getTime())){
+return "-";
+}
+
+return rawDate.toLocaleDateString("en-GB",{
+day:"2-digit",
+month:"short",
+year:"numeric"
+});
+}
+
+function calculateRemainingDays(expiryDate){
+if(!expiryDate){
+return null;
+}
+
+const expiry=expiryDate.seconds ? new Date(expiryDate.seconds*1000) : new Date(expiryDate);
+const today=new Date();
+
+expiry.setHours(0,0,0,0);
+today.setHours(0,0,0,0);
+
+const diff=expiry.getTime()-today.getTime();
+return Math.ceil(diff/86400000);
+}
+
+function getPlanBadge(shop){
+const remainingDays=calculateRemainingDays(shop.expiryDate);
+const isActive=shop.planActive && remainingDays!==null && remainingDays>=0;
+
+if(isActive){
+return '<span class="badge active">Active</span>';
+}
+
+return '<span class="badge inactive">Inactive</span>';
+}
+
+function getSortValue(shop){
+if(sortBy.value==="dateAdded"){
+if(shop.createdAt && shop.createdAt.seconds){
+return shop.createdAt.seconds;
+}
+
+return 0;
+}
+
+if(shop.expiryDate && shop.expiryDate.seconds){
+return shop.expiryDate.seconds;
+}
+
+return Number.MAX_SAFE_INTEGER;
+}
+
+function renderShops(){
+const selectedPlace=placeFilter.value.trim().toLowerCase();
+const searchTerm=searchBox.value.trim().toLowerCase();
+
+let filtered=shopsData.filter(shop=>{
+const matchesPlace=selectedPlace==="" || (shop.place||"").toLowerCase()===selectedPlace;
+const haystack=[shop.shopName,shop.landmark,shop.phone].join(" ").toLowerCase();
+const matchesSearch=searchTerm==="" || haystack.includes(searchTerm);
+return matchesPlace && matchesSearch;
+});
+
+filtered.sort((a,b)=>{
+if(sortBy.value==="dateAdded"){
+return getSortValue(b)-getSortValue(a);
+}
+
+return getSortValue(a)-getSortValue(b);
+});
+
+if(filtered.length===0){
+shopTableBody.innerHTML='<tr><td colspan="7" class="emptyState">No shops found for the selected filter.</td></tr>';
+return;
+}
+
+shopTableBody.innerHTML=filtered.map(shop=>{
+const remainingDays=calculateRemainingDays(shop.expiryDate);
+const remainingText=remainingDays===null ? "-" : remainingDays<0 ? "Expired" : remainingDays+" Days";
+const expiryText=formatDate(shop.expiryDate);
+const planType=[shop.plan,shop.cleaningType].filter(Boolean).join(" - ") || "-";
+
+return `
+<tr>
+<td>${shop.shopName||"-"}</td>
+<td>${shop.landmark||"-"}</td>
+<td>${shop.phone||"-"}</td>
+<td>${planType}</td>
+<td>${expiryText}</td>
+<td>${remainingText}</td>
+<td>
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+${getPlanBadge(shop)}
+<button class="actionBtn" data-id="${shop.id}">Active Plan</button>
+</div>
+</td>
+</tr>`;
+}).join("");
+}
+
+async function loadPlaces(){
+placeFilter.innerHTML='<option value="">Select Place</option>';
+
+const snapshot=await getDocs(collection(db,"places"));
+
+snapshot.forEach(item=>{
+const data=item.data();
+placeFilter.innerHTML += `
+<option value="${data.name}">
+${data.name}
+</option>`;
+});
+
+const savedPlace=localStorage.getItem("selectedPlace");
+
+if(savedPlace){
+placeFilter.value=savedPlace;
+}
+}
+
+async function loadShops(){
+shopTableBody.innerHTML='<tr><td colspan="7" class="emptyState">Loading shops...</td></tr>';
+
+const snapshot=await getDocs(collection(db,"shops"));
+
+shopsData=snapshot.docs.map(item=>({
+id:item.id,
+...item.data()
+}));
+
+renderShops();
+}
+
+function openModal(shopId){
+activeShop=shopsData.find(shop=>shop.id===shopId) || null;
+
+if(!activeShop){
+showMessage("Shop data not found","error");
+return;
+}
+
+modalShopName.textContent=`${activeShop.shopName||"Shop"} | Plan: ${activeShop.plan||"-"} | Validity: 30 Days`;
+paymentAmount.value=activeShop.amount||"";
+paymentCash.checked=false;
+paymentOnline.checked=false;
+planModal.classList.add("show");
+}
+
+function closeModal(){
+planModal.classList.remove("show");
+activeShop=null;
+}
+
+async function activatePlan(){
+if(!activeShop){
+return;
+}
+
+const amountValue=Number(paymentAmount.value);
+
+if(!amountValue || amountValue<0){
+showMessage("Enter a valid payment amount","error");
+return;
+}
+
+let paymentType="";
+
+if(paymentCash.checked){
+paymentType="Cash";
+}
+
+if(paymentOnline.checked){
+paymentType="Online";
+}
+
+if(paymentCash.checked && paymentOnline.checked){
+showMessage("Select only one payment type","error");
+return;
+}
+
+if(paymentType===""){
+showMessage("Select payment type","error");
+return;
+}
+
+const activatedAt=new Date();
+const expiryDate=new Date(activatedAt);
+expiryDate.setDate(expiryDate.getDate()+30);
+
+try{
+await updateDoc(doc(db,"shops",activeShop.id),{
+paymentAmount:amountValue,
+paymentType:paymentType,
+payment:"Paid",
+planActive:true,
+status:"Active",
+planActivatedAt:Timestamp.fromDate(activatedAt),
+expiryDate:Timestamp.fromDate(expiryDate)
+});
+
+showMessage("Plan activated successfully","success");
+closeModal();
+await loadShops();
+}
+catch(error){
+showMessage(error.message,"error");
+}
+}
+
+paymentCash.addEventListener("change",()=>{
+if(paymentCash.checked){
+paymentOnline.checked=false;
+}
+});
+
+paymentOnline.addEventListener("change",()=>{
+if(paymentOnline.checked){
+paymentCash.checked=false;
+}
+});
+
+placeFilter.addEventListener("change",()=>{
+localStorage.setItem("selectedPlace",placeFilter.value);
+renderShops();
+});
+
+sortBy.addEventListener("change",renderShops);
+searchBox.addEventListener("input",renderShops);
+
+shopTableBody.addEventListener("click",e=>{
+const button=e.target.closest(".actionBtn");
+
+if(button){
+openModal(button.dataset.id);
+}
+});
+
+closeModalBtn.addEventListener("click",closeModal);
+activatePlanBtn.addEventListener("click",activatePlan);
+
+planModal.addEventListener("click",e=>{
+if(e.target===planModal){
+closeModal();
+}
+});
+
+await loadPlaces();
+await loadShops();
+</script>
+</body>
+</html>

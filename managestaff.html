@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A1 Business Solutions - Manage Staff</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#edf5f0,#f8fbff);
+color:#1d2b22;
+min-height:100vh;
+padding:24px;
+}
+
+.page{
+max-width:1320px;
+margin:0 auto;
+}
+
+.hero{
+background:linear-gradient(135deg,#0b6b36,#167c47);
+color:#fff;
+padding:28px;
+border-radius:22px;
+box-shadow:0 18px 42px rgba(11,107,54,.18);
+margin-bottom:20px;
+}
+
+.hero h1{
+font-size:30px;
+margin-bottom:8px;
+}
+
+.hero p{
+font-size:15px;
+opacity:.92;
+}
+
+.message{
+display:none;
+margin-bottom:16px;
+padding:12px 14px;
+border-radius:12px;
+font-size:14px;
+font-weight:600;
+}
+
+.message.success{
+display:block;
+background:#dff4e5;
+color:#106c39;
+}
+
+.message.error{
+display:block;
+background:#f9dfe2;
+color:#8f2330;
+}
+
+.toolbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:16px;
+background:#fff;
+padding:18px;
+border-radius:18px;
+box-shadow:0 10px 28px rgba(19,40,29,.08);
+margin-bottom:18px;
+flex-wrap:wrap;
+}
+
+.placeTag{
+font-size:14px;
+color:#567165;
+}
+
+.placeTag strong{
+color:#163b25;
+}
+
+.searchBox{
+min-width:280px;
+flex:1;
+max-width:360px;
+}
+
+.searchBox input,
+.modalSelect{
+width:100%;
+padding:13px 14px;
+border:1px solid #d5dfd9;
+border-radius:12px;
+outline:none;
+font-size:15px;
+background:#fff;
+}
+
+.searchBox input:focus,
+.modalSelect:focus{
+border-color:#0b6b36;
+box-shadow:0 0 0 4px rgba(11,107,54,.12);
+}
+
+.layout{
+display:grid;
+grid-template-columns:360px 1fr;
+gap:18px;
+}
+
+.panel{
+background:#fff;
+border-radius:20px;
+box-shadow:0 10px 28px rgba(19,40,29,.08);
+overflow:hidden;
+}
+
+.panelHeader{
+padding:18px 20px;
+border-bottom:1px solid #edf1ee;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+}
+
+.panelHeader h2{
+font-size:20px;
+color:#183d27;
+}
+
+.panelHeader p{
+font-size:13px;
+color:#6c8075;
+}
+
+.staffList{
+padding:14px;
+display:flex;
+flex-direction:column;
+gap:12px;
+max-height:720px;
+overflow:auto;
+}
+
+.staffCard{
+border:1px solid #e7eeea;
+background:#fbfefb;
+border-radius:16px;
+padding:14px;
+cursor:pointer;
+transition:.25s;
+}
+
+.staffCard:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 20px rgba(19,40,29,.06);
+}
+
+.staffCard.active{
+border-color:#0b6b36;
+background:#edf8f0;
+box-shadow:0 10px 24px rgba(11,107,54,.12);
+}
+
+.staffCard h3{
+font-size:17px;
+color:#173b25;
+margin-bottom:6px;
+}
+
+.staffMeta{
+font-size:13px;
+color:#65796e;
+line-height:1.6;
+}
+
+.contentBody{
+padding:18px;
+}
+
+.topActions{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+flex-wrap:wrap;
+margin-bottom:16px;
+}
+
+.topActions h3{
+font-size:22px;
+color:#173b25;
+}
+
+.topActions p{
+font-size:14px;
+color:#64776d;
+}
+
+.primaryBtn,
+.secondaryBtn,
+.dangerBtn,
+.inlineBtn{
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-weight:600;
+transition:.25s;
+}
+
+.primaryBtn{
+background:#0b6b36;
+color:#fff;
+padding:12px 16px;
+}
+
+.primaryBtn:hover,
+.inlineBtn:hover{
+background:#084d27;
+}
+
+.secondaryBtn{
+background:#edf3ee;
+color:#244232;
+padding:12px 16px;
+}
+
+.dangerBtn{
+background:#fce6e8;
+color:#9a2433;
+padding:10px 14px;
+}
+
+.dangerBtn:hover{
+background:#f7d5da;
+}
+
+.inlineBtn{
+background:#0b6b36;
+color:#fff;
+padding:10px 14px;
+font-size:13px;
+}
+
+.shopGrid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+}
+
+.shopCard{
+border:1px solid #e7eeea;
+border-radius:16px;
+padding:16px;
+background:#fbfefb;
+}
+
+.shopCard h4{
+font-size:17px;
+color:#153822;
+margin-bottom:8px;
+}
+
+.shopInfo{
+font-size:13px;
+color:#667a6f;
+line-height:1.7;
+margin-bottom:14px;
+}
+
+.shopActions{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.emptyState{
+padding:36px 18px;
+text-align:center;
+color:#74857a;
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(11,20,15,.45);
+display:none;
+justify-content:center;
+align-items:center;
+padding:20px;
+z-index:60;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modalCard{
+width:100%;
+max-width:720px;
+background:#fff;
+border-radius:20px;
+padding:22px;
+box-shadow:0 24px 50px rgba(0,0,0,.18);
+max-height:90vh;
+overflow:auto;
+}
+
+.modalTitle{
+font-size:24px;
+color:#173b25;
+margin-bottom:6px;
+}
+
+.modalSub{
+font-size:14px;
+color:#64776d;
+margin-bottom:18px;
+}
+
+.modalList{
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-bottom:18px;
+}
+
+.modalItem{
+border:1px solid #e7eeea;
+border-radius:15px;
+padding:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:14px;
+flex-wrap:wrap;
+}
+
+.modalItem h4{
+font-size:16px;
+color:#173b25;
+margin-bottom:6px;
+}
+
+.modalItem p{
+font-size:13px;
+color:#667a6f;
+line-height:1.6;
+}
+
+.statusPill{
+display:inline-flex;
+align-items:center;
+padding:6px 10px;
+border-radius:999px;
+font-size:12px;
+font-weight:600;
+}
+
+.statusPill.free{
+background:#dff4e5;
+color:#106c39;
+}
+
+.statusPill.used{
+background:#f7e6d8;
+color:#9b5f1c;
+}
+
+.modalActions{
+display:flex;
+justify-content:flex-end;
+gap:12px;
+}
+
+@media(max-width:1024px){
+.layout{
+grid-template-columns:1fr;
+}
+}
+
+@media(max-width:760px){
+body{
+padding:16px;
+}
+
+.hero{
+padding:22px;
+}
+
+.hero h1{
+font-size:24px;
+}
+
+.shopGrid{
+grid-template-columns:1fr;
+}
+
+.modalActions{
+flex-direction:column-reverse;
+}
+
+.primaryBtn,
+.secondaryBtn{
+width:100%;
+}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="hero">
+<h1>Manage Staff</h1>
+<p>Assign shops to staff, remove assignments, and change staff when needed.</p>
+</div>
+
+<div id="pageMessage" class="message"></div>
+
+<div class="toolbar">
+<div class="placeTag">
+<strong id="placeLabel">Place: All Staff</strong>
+</div>
+<div class="searchBox">
+<input type="text" id="searchBox" placeholder="Search staff by name, ID, phone, or job type">
+</div>
+</div>
+
+<div class="layout">
+<div class="panel">
+<div class="panelHeader">
+<div>
+<h2>Staff List</h2>
+<p>Select a staff to manage assigned shops</p>
+</div>
+</div>
+<div class="staffList" id="staffList"></div>
+</div>
+
+<div class="panel">
+<div class="contentBody">
+<div class="topActions">
+<div>
+<h3 id="selectedStaffName">Select Staff</h3>
+<p id="selectedStaffMeta">Assigned shops will appear here.</p>
+</div>
+<button type="button" class="primaryBtn" id="openAddShopBtn" disabled>Add Shop</button>
+</div>
+
+<div id="assignedShopContainer"></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal" id="addShopModal">
+<div class="modalCard">
+<h3 class="modalTitle">Add Shop</h3>
+<p class="modalSub" id="addShopSub">Available shops for selected staff</p>
+<div class="modalList" id="availableShopList"></div>
+<div class="modalActions">
+<button type="button" class="secondaryBtn" id="closeAddShopModal">Close</button>
+</div>
+</div>
+</div>
+
+<div class="modal" id="changeStaffModal">
+<div class="modalCard">
+<h3 class="modalTitle">Change Staff</h3>
+<p class="modalSub" id="changeStaffSub">Move this shop to another staff</p>
+<select id="changeStaffSelect" class="modalSelect">
+<option value="">Select Staff</option>
+</select>
+<div class="modalActions" style="margin-top:18px;">
+<button type="button" class="secondaryBtn" id="closeChangeStaffModal">Cancel</button>
+<button type="button" class="primaryBtn" id="confirmChangeStaffBtn">Change Staff</button>
+</div>
+</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import {
+getFirestore,
+collection,
+getDocs,
+doc,
+updateDoc,
+Timestamp
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+const firebaseConfig={
+apiKey:"AIzaSyDjdeOUbsilqnLaXMGq-ruL4cV9epZuFRs",
+authDomain:"a1business-55e5a.firebaseapp.com",
+projectId:"a1business-55e5a",
+storageBucket:"a1business-55e5a.firebasestorage.app",
+messagingSenderId:"1067978149348",
+appId:"1:1067978149348:web:c8c6ea7390b571ffc24bf1"
+};
+
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+
+const pageMessage=document.getElementById("pageMessage");
+const placeLabel=document.getElementById("placeLabel");
+const searchBox=document.getElementById("searchBox");
+const staffList=document.getElementById("staffList");
+const selectedStaffName=document.getElementById("selectedStaffName");
+const selectedStaffMeta=document.getElementById("selectedStaffMeta");
+const assignedShopContainer=document.getElementById("assignedShopContainer");
+const openAddShopBtn=document.getElementById("openAddShopBtn");
+const addShopModal=document.getElementById("addShopModal");
+const availableShopList=document.getElementById("availableShopList");
+const addShopSub=document.getElementById("addShopSub");
+const closeAddShopModal=document.getElementById("closeAddShopModal");
+const changeStaffModal=document.getElementById("changeStaffModal");
+const changeStaffSub=document.getElementById("changeStaffSub");
+const changeStaffSelect=document.getElementById("changeStaffSelect");
+const closeChangeStaffModal=document.getElementById("closeChangeStaffModal");
+const confirmChangeStaffBtn=document.getElementById("confirmChangeStaffBtn");
+
+let staffData=[];
+let shopsData=[];
+let selectedStaff=null;
+let pendingShopForChange=null;
+
+function showMessage(text,type){
+pageMessage.className="message "+type;
+pageMessage.textContent=text;
+
+setTimeout(()=>{
+pageMessage.className="message";
+pageMessage.textContent="";
+},3000);
+}
+
+function getSelectedPlace(){
+return (localStorage.getItem("selectedPlace")||"").trim();
+}
+
+function updatePlaceLabel(){
+const selectedPlace=getSelectedPlace();
+placeLabel.textContent=selectedPlace ? `Place: ${selectedPlace}` : "Place: All Staff";
+}
+
+function getFilteredStaff(){
+const selectedPlace=getSelectedPlace().toLowerCase();
+const searchTerm=searchBox.value.trim().toLowerCase();
+
+return staffData.filter(staff=>{
+const matchesPlace=selectedPlace==="" || (staff.place||"").toLowerCase()===selectedPlace;
+const haystack=[staff.name,staff.staffId,staff.phone,staff.jobType].join(" ").toLowerCase();
+const matchesSearch=searchTerm==="" || haystack.includes(searchTerm);
+return matchesPlace && matchesSearch;
+});
+}
+
+function getAssignedShopsForStaff(staffId){
+return shopsData.filter(shop=>shop.assignedStaffId===staffId);
+}
+
+function renderStaffList(){
+const filteredStaff=getFilteredStaff();
+
+if(filteredStaff.length===0){
+staffList.innerHTML='<div class="emptyState">No staff found for the current filter.</div>';
+selectedStaff=null;
+renderAssignedShops();
+return;
+}
+
+if(selectedStaff){
+selectedStaff=filteredStaff.find(item=>item.id===selectedStaff.id) || filteredStaff[0];
+}
+else{
+selectedStaff=filteredStaff[0];
+}
+
+staffList.innerHTML=filteredStaff.map(staff=>{
+const assignedCount=getAssignedShopsForStaff(staff.id).length;
+const isActive=selectedStaff && selectedStaff.id===staff.id;
+
+return `
+<div class="staffCard ${isActive ? "active" : ""}" data-id="${staff.id}">
+<h3>${staff.name||"-"}</h3>
+<div class="staffMeta">
+ID: ${staff.staffId||"-"}<br>
+Phone: ${staff.phone||"-"}<br>
+Job: ${staff.jobType||"-"}<br>
+Assigned Shops: ${assignedCount}
+</div>
+</div>`;
+}).join("");
+
+renderAssignedShops();
+}
+
+function renderAssignedShops(){
+if(!selectedStaff){
+selectedStaffName.textContent="Select Staff";
+selectedStaffMeta.textContent="Assigned shops will appear here.";
+assignedShopContainer.innerHTML='<div class="emptyState">Choose a staff to manage assignments.</div>';
+openAddShopBtn.disabled=true;
+return;
+}
+
+openAddShopBtn.disabled=false;
+selectedStaffName.textContent=selectedStaff.name||"Staff";
+selectedStaffMeta.textContent=`ID: ${selectedStaff.staffId||"-"} | Place: ${selectedStaff.place||"-"} | Phone: ${selectedStaff.phone||"-"}`;
+
+const assignedShops=getAssignedShopsForStaff(selectedStaff.id);
+
+if(assignedShops.length===0){
+assignedShopContainer.innerHTML='<div class="emptyState">No shops assigned to this staff.</div>';
+return;
+}
+
+assignedShopContainer.innerHTML=`<div class="shopGrid">${assignedShops.map(shop=>`
+<div class="shopCard">
+<h4>${shop.shopName||"-"}</h4>
+<div class="shopInfo">
+Landmark: ${shop.landmark||"-"}<br>
+Phone: ${shop.phone||"-"}<br>
+Plan: ${shop.plan||"-"} ${shop.cleaningType ? `- ${shop.cleaningType}` : ""}<br>
+Assigned Staff: ${shop.assignedStaffName||"-"}
+</div>
+<div class="shopActions">
+<button type="button" class="dangerBtn" data-remove-id="${shop.id}">Remove Shop</button>
+<button type="button" class="inlineBtn" data-change-id="${shop.id}">Change Staff</button>
+</div>
+</div>`).join("")}</div>`;
+}
+
+function renderAvailableShops(){
+if(!selectedStaff){
+availableShopList.innerHTML='<div class="emptyState">Select a staff first.</div>';
+return;
+}
+
+const selectedPlace=(selectedStaff.place||"").toLowerCase();
+const availableShops=shopsData.filter(shop=>(shop.place||"").toLowerCase()===selectedPlace);
+
+if(availableShops.length===0){
+availableShopList.innerHTML='<div class="emptyState">No shops found for this place.</div>';
+return;
+}
+
+availableShopList.innerHTML=availableShops.map(shop=>{
+const assignedToOther=shop.assignedStaffId && shop.assignedStaffId!==selectedStaff.id;
+const assignedToSelf=shop.assignedStaffId===selectedStaff.id;
+const pill=assignedToOther
+? '<span class="statusPill used">Assigned to another staff</span>'
+: assignedToSelf
+? '<span class="statusPill used">Already assigned</span>'
+: '<span class="statusPill free">Available</span>';
+
+const buttonDisabled=assignedToOther || assignedToSelf;
+const buttonText=assignedToSelf ? "Added" : "Add Shop";
+
+return `
+<div class="modalItem">
+<div>
+<h4>${shop.shopName||"-"}</h4>
+<p>
+Landmark: ${shop.landmark||"-"}<br>
+Phone: ${shop.phone||"-"}<br>
+Current Staff: ${shop.assignedStaffName||"Not Assigned"}
+</p>
+</div>
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+${pill}
+<button type="button" class="inlineBtn" data-add-id="${shop.id}" ${buttonDisabled ? "disabled style=\"opacity:.45;cursor:not-allowed;\"" : ""}>${buttonText}</button>
+</div>
+</div>`;
+}).join("");
+}
+
+function openAddShopPopup(){
+if(!selectedStaff){
+showMessage("Select a staff first","error");
+return;
+}
+
+addShopSub.textContent=`Available shops in ${selectedStaff.place||"-"} for ${selectedStaff.name||"staff"}`;
+renderAvailableShops();
+addShopModal.classList.add("show");
+}
+
+function closeAddShopPopup(){
+addShopModal.classList.remove("show");
+}
+
+function openChangeStaffPopup(shopId){
+if(!selectedStaff){
+return;
+}
+
+pendingShopForChange=shopsData.find(shop=>shop.id===shopId) || null;
+
+if(!pendingShopForChange){
+showMessage("Shop data not found","error");
+return;
+}
+
+changeStaffSub.textContent=`${pendingShopForChange.shopName||"Shop"} is now assigned to ${selectedStaff.name||"staff"}`;
+
+const samePlaceStaff=staffData.filter(staff=>
+staff.id!==selectedStaff.id &&
+(staff.place||"").toLowerCase()===(selectedStaff.place||"").toLowerCase()
+);
+
+changeStaffSelect.innerHTML='<option value="">Select Staff</option>';
+
+samePlaceStaff.forEach(staff=>{
+changeStaffSelect.innerHTML += `
+<option value="${staff.id}">
+${staff.name} (${staff.staffId||"-"})
+</option>`;
+});
+
+changeStaffModal.classList.add("show");
+}
+
+function closeChangeStaffPopup(){
+changeStaffModal.classList.remove("show");
+pendingShopForChange=null;
+changeStaffSelect.value="";
+}
+
+async function addShopToStaff(shopId){
+if(!selectedStaff){
+return;
+}
+
+const shop=shopsData.find(item=>item.id===shopId);
+
+if(!shop){
+showMessage("Shop not found","error");
+return;
+}
+
+if(shop.assignedStaffId && shop.assignedStaffId!==selectedStaff.id){
+showMessage("This shop is already assigned to another staff","error");
+return;
+}
+
+try{
+await updateDoc(doc(db,"shops",shopId),{
+assignedStaffId:selectedStaff.id,
+assignedStaffName:selectedStaff.name||"",
+assignmentPlace:selectedStaff.place||"",
+assignedAt:Timestamp.fromDate(new Date())
+});
+
+showMessage("Shop assigned successfully","success");
+await loadData();
+renderAvailableShops();
+}
+catch(error){
+showMessage(error.message,"error");
+}
+}
+
+async function removeShopAssignment(shopId){
+const shop=shopsData.find(item=>item.id===shopId);
+
+if(!shop){
+showMessage("Shop not found","error");
+return;
+}
+
+try{
+await updateDoc(doc(db,"shops",shopId),{
+assignedStaffId:"",
+assignedStaffName:"",
+assignmentPlace:"",
+assignedAt:null
+});
+
+showMessage("Shop removed from staff","success");
+await loadData();
+}
+catch(error){
+showMessage(error.message,"error");
+}
+}
+
+async function changeShopStaff(){
+if(!pendingShopForChange){
+return;
+}
+
+const nextStaffId=changeStaffSelect.value;
+
+if(nextStaffId===""){
+showMessage("Select another staff","error");
+return;
+}
+
+const nextStaff=staffData.find(staff=>staff.id===nextStaffId);
+
+if(!nextStaff){
+showMessage("Selected staff not found","error");
+return;
+}
+
+try{
+await updateDoc(doc(db,"shops",pendingShopForChange.id),{
+assignedStaffId:nextStaff.id,
+assignedStaffName:nextStaff.name||"",
+assignmentPlace:nextStaff.place||"",
+assignedAt:Timestamp.fromDate(new Date())
+});
+
+showMessage("Shop reassigned successfully","success");
+closeChangeStaffPopup();
+await loadData();
+}
+catch(error){
+showMessage(error.message,"error");
+}
+}
+
+async function loadData(){
+updatePlaceLabel();
+
+const [staffSnapshot,shopsSnapshot]=await Promise.all([
+getDocs(collection(db,"staff")),
+getDocs(collection(db,"shops"))
+]);
+
+staffData=staffSnapshot.docs.map(item=>({
+id:item.id,
+...item.data()
+}));
+
+shopsData=shopsSnapshot.docs.map(item=>({
+id:item.id,
+...item.data()
+}));
+
+staffData.sort((a,b)=>{
+const aName=(a.name||"").toLowerCase();
+const bName=(b.name||"").toLowerCase();
+return aName.localeCompare(bName);
+});
+
+renderStaffList();
+}
+
+searchBox.addEventListener("input",renderStaffList);
+
+staffList.addEventListener("click",e=>{
+const card=e.target.closest(".staffCard");
+
+if(card){
+selectedStaff=staffData.find(item=>item.id===card.dataset.id) || null;
+renderStaffList();
+}
+});
+
+assignedShopContainer.addEventListener("click",e=>{
+const removeButton=e.target.closest("[data-remove-id]");
+const changeButton=e.target.closest("[data-change-id]");
+
+if(removeButton){
+removeShopAssignment(removeButton.dataset.removeId);
+}
+
+if(changeButton){
+openChangeStaffPopup(changeButton.dataset.changeId);
+}
+});
+
+availableShopList.addEventListener("click",e=>{
+const addButton=e.target.closest("[data-add-id]");
+
+if(addButton && !addButton.disabled){
+addShopToStaff(addButton.dataset.addId);
+}
+});
+
+openAddShopBtn.addEventListener("click",openAddShopPopup);
+closeAddShopModal.addEventListener("click",closeAddShopPopup);
+closeChangeStaffModal.addEventListener("click",closeChangeStaffPopup);
+confirmChangeStaffBtn.addEventListener("click",changeShopStaff);
+
+addShopModal.addEventListener("click",e=>{
+if(e.target===addShopModal){
+closeAddShopPopup();
+}
+});
+
+changeStaffModal.addEventListener("click",e=>{
+if(e.target===changeStaffModal){
+closeChangeStaffPopup();
+}
+});
+
+await loadData();
+</script>
+</body>
+</html>

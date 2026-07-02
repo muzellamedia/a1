@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A1 Business Solutions - Staff List</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#eef4f1,#f8fbff);
+min-height:100vh;
+padding:24px;
+color:#1f2c25;
+}
+
+.page{
+max-width:1220px;
+margin:0 auto;
+}
+
+.hero{
+background:linear-gradient(135deg,#0b6b36,#157d47);
+color:#fff;
+padding:28px;
+border-radius:20px;
+box-shadow:0 18px 42px rgba(11,107,54,.18);
+margin-bottom:20px;
+}
+
+.hero h1{
+font-size:30px;
+margin-bottom:8px;
+}
+
+.hero p{
+font-size:15px;
+opacity:.92;
+}
+
+.message{
+display:none;
+margin-bottom:16px;
+padding:12px 14px;
+border-radius:12px;
+font-size:14px;
+font-weight:600;
+}
+
+.message.success{
+display:block;
+background:#dff4e5;
+color:#106c39;
+}
+
+.message.error{
+display:block;
+background:#f9dfe2;
+color:#8f2330;
+}
+
+.toolbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:16px;
+background:#fff;
+padding:18px;
+border-radius:18px;
+box-shadow:0 10px 28px rgba(19,40,29,.08);
+margin-bottom:18px;
+flex-wrap:wrap;
+}
+
+.toolbar .meta{
+font-size:14px;
+color:#5a6e63;
+}
+
+.toolbar .meta strong{
+color:#1d3a28;
+}
+
+.searchBox{
+min-width:280px;
+flex:1;
+max-width:360px;
+}
+
+.searchBox input{
+width:100%;
+padding:13px 14px;
+border:1px solid #d5dfd9;
+border-radius:12px;
+outline:none;
+font-size:15px;
+}
+
+.searchBox input:focus,
+.salaryField input:focus{
+border-color:#0b6b36;
+box-shadow:0 0 0 4px rgba(11,107,54,.12);
+}
+
+.panel{
+background:#fff;
+border-radius:18px;
+box-shadow:0 10px 28px rgba(19,40,29,.08);
+overflow:hidden;
+}
+
+.tableWrap{
+overflow:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:920px;
+}
+
+th,
+td{
+padding:16px 14px;
+text-align:left;
+border-bottom:1px solid #edf1ee;
+font-size:14px;
+vertical-align:middle;
+}
+
+th{
+background:#f5faf6;
+color:#365341;
+font-size:13px;
+text-transform:uppercase;
+letter-spacing:.03em;
+}
+
+tbody tr:hover{
+background:#fbfefb;
+}
+
+.nameBtn{
+background:none;
+border:none;
+padding:0;
+color:#0b6b36;
+font-weight:700;
+font-size:14px;
+cursor:pointer;
+text-align:left;
+}
+
+.nameBtn:hover{
+text-decoration:underline;
+}
+
+.salaryBtn,
+.primaryBtn,
+.secondaryBtn{
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-weight:600;
+transition:.25s;
+}
+
+.salaryBtn{
+background:#0b6b36;
+color:#fff;
+padding:10px 14px;
+font-size:13px;
+}
+
+.salaryBtn:hover,
+.primaryBtn:hover{
+background:#084d27;
+}
+
+.secondaryBtn{
+background:#edf3ee;
+color:#244232;
+padding:12px 16px;
+}
+
+.primaryBtn{
+background:#0b6b36;
+color:#fff;
+padding:12px 18px;
+}
+
+.emptyState{
+padding:34px 20px;
+text-align:center;
+color:#74857a;
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(11,20,15,.45);
+display:none;
+justify-content:center;
+align-items:center;
+padding:20px;
+z-index:60;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modalCard{
+width:100%;
+max-width:540px;
+background:#fff;
+border-radius:20px;
+padding:24px;
+box-shadow:0 24px 50px rgba(0,0,0,.18);
+max-height:90vh;
+overflow:auto;
+}
+
+.modalCard.large{
+max-width:760px;
+}
+
+.modalTitle{
+font-size:24px;
+margin-bottom:8px;
+color:#163b25;
+}
+
+.modalSub{
+font-size:14px;
+color:#617468;
+margin-bottom:18px;
+}
+
+.salaryField{
+margin-bottom:18px;
+}
+
+.salaryField label{
+display:block;
+font-size:14px;
+font-weight:600;
+color:#355240;
+margin-bottom:8px;
+}
+
+.salaryField input{
+width:100%;
+padding:13px 14px;
+border:1px solid #d5dfd9;
+border-radius:12px;
+outline:none;
+font-size:15px;
+}
+
+.modalActions{
+display:flex;
+justify-content:flex-end;
+gap:12px;
+}
+
+.detailGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+margin-bottom:18px;
+}
+
+.detailItem{
+background:#f7faf8;
+border:1px solid #edf3ee;
+border-radius:14px;
+padding:14px;
+}
+
+.detailItem h4{
+font-size:12px;
+text-transform:uppercase;
+letter-spacing:.04em;
+color:#648072;
+margin-bottom:7px;
+}
+
+.detailItem p{
+font-size:15px;
+color:#22352a;
+word-break:break-word;
+}
+
+.imageGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+margin-bottom:20px;
+}
+
+.imageCard{
+background:#f7faf8;
+border:1px solid #edf3ee;
+border-radius:16px;
+padding:14px;
+}
+
+.imageCard h4{
+font-size:13px;
+color:#355240;
+margin-bottom:10px;
+}
+
+.imageCard img{
+width:100%;
+height:260px;
+object-fit:cover;
+border-radius:12px;
+background:#e7efea;
+}
+
+.imagePlaceholder{
+height:260px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:12px;
+background:#e7efea;
+color:#698175;
+font-size:14px;
+}
+
+@media(max-width:760px){
+body{
+padding:16px;
+}
+
+.hero{
+padding:22px;
+}
+
+.hero h1{
+font-size:24px;
+}
+
+.detailGrid,
+.imageGrid{
+grid-template-columns:1fr;
+}
+
+.modalActions{
+flex-direction:column-reverse;
+}
+
+.primaryBtn,
+.secondaryBtn{
+width:100%;
+}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="hero">
+<h1>Staff List</h1>
+<p>Staff details, salary status, and profile information in one place.</p>
+</div>
+
+<div id="pageMessage" class="message"></div>
+
+<div class="toolbar">
+<div class="meta">
+<strong id="placeLabel">Place: All Staff</strong>
+</div>
+<div class="searchBox">
+<input type="text" id="searchBox" placeholder="Search by name, ID, phone, or job type">
+</div>
+</div>
+
+<div class="panel">
+<div class="tableWrap">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>ID Number</th>
+<th>Phone Number</th>
+<th>Job Type</th>
+<th>Salary</th>
+<th>Last Salary Paid Date</th>
+<th>Pay Salary</th>
+</tr>
+</thead>
+<tbody id="staffTableBody">
+<tr>
+<td colspan="7" class="emptyState">Loading staff...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="modal" id="salaryModal">
+<div class="modalCard">
+<h3 class="modalTitle">Pay Salary</h3>
+<p class="modalSub" id="salaryModalSub">Staff details</p>
+
+<div class="salaryField">
+<label>Salary Amount</label>
+<input type="number" id="salaryAmount" min="0">
+</div>
+
+<div class="modalActions">
+<button type="button" class="secondaryBtn" id="closeSalaryModal">Cancel</button>
+<button type="button" class="primaryBtn" id="confirmSalaryBtn">Pay Salary</button>
+</div>
+</div>
+</div>
+
+<div class="modal" id="detailsModal">
+<div class="modalCard large">
+<h3 class="modalTitle" id="detailsTitle">Staff Details</h3>
+<p class="modalSub" id="detailsSub">Complete profile</p>
+
+<div class="detailGrid">
+<div class="detailItem">
+<h4>Address</h4>
+<p id="detailAddress">-</p>
+</div>
+<div class="detailItem">
+<h4>Aadhaar Number</h4>
+<p id="detailAadhaar">-</p>
+</div>
+<div class="detailItem">
+<h4>Password</h4>
+<p id="detailPassword">-</p>
+</div>
+<div class="detailItem">
+<h4>Place</h4>
+<p id="detailPlace">-</p>
+</div>
+</div>
+
+<div class="imageGrid">
+<div class="imageCard">
+<h4>Staff Photo</h4>
+<div id="detailPhotoWrap"></div>
+</div>
+<div class="imageCard">
+<h4>Aadhaar Photo</h4>
+<div id="detailAadhaarPhotoWrap"></div>
+</div>
+</div>
+
+<div class="modalActions">
+<button type="button" class="secondaryBtn" id="closeDetailsModal">Close</button>
+</div>
+</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import {
+getFirestore,
+collection,
+getDocs,
+doc,
+updateDoc,
+Timestamp
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+const firebaseConfig={
+apiKey:"AIzaSyDjdeOUbsilqnLaXMGq-ruL4cV9epZuFRs",
+authDomain:"a1business-55e5a.firebaseapp.com",
+projectId:"a1business-55e5a",
+storageBucket:"a1business-55e5a.firebasestorage.app",
+messagingSenderId:"1067978149348",
+appId:"1:1067978149348:web:c8c6ea7390b571ffc24bf1"
+};
+
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+
+const pageMessage=document.getElementById("pageMessage");
+const placeLabel=document.getElementById("placeLabel");
+const searchBox=document.getElementById("searchBox");
+const staffTableBody=document.getElementById("staffTableBody");
+const salaryModal=document.getElementById("salaryModal");
+const detailsModal=document.getElementById("detailsModal");
+const salaryModalSub=document.getElementById("salaryModalSub");
+const salaryAmount=document.getElementById("salaryAmount");
+const closeSalaryModal=document.getElementById("closeSalaryModal");
+const confirmSalaryBtn=document.getElementById("confirmSalaryBtn");
+const closeDetailsModal=document.getElementById("closeDetailsModal");
+
+let staffData=[];
+let activeStaff=null;
+
+function showMessage(text,type){
+pageMessage.className="message "+type;
+pageMessage.textContent=text;
+
+setTimeout(()=>{
+pageMessage.className="message";
+pageMessage.textContent="";
+},3000);
+}
+
+function formatDate(value){
+if(!value){
+return "-";
+}
+
+const rawDate=value.seconds ? new Date(value.seconds*1000) : new Date(value);
+
+if(Number.isNaN(rawDate.getTime())){
+return "-";
+}
+
+return rawDate.toLocaleDateString("en-GB",{
+day:"2-digit",
+month:"short",
+year:"numeric"
+});
+}
+
+function renderImage(url){
+if(url){
+return `<img src="${url}" alt="Preview">`;
+}
+
+return '<div class="imagePlaceholder">No image available</div>';
+}
+
+function renderStaff(){
+const selectedPlace=(localStorage.getItem("selectedPlace")||"").trim().toLowerCase();
+const searchTerm=searchBox.value.trim().toLowerCase();
+
+placeLabel.textContent=selectedPlace ? `Place: ${localStorage.getItem("selectedPlace")}` : "Place: All Staff";
+
+const filtered=staffData.filter(staff=>{
+const matchesPlace=selectedPlace==="" || (staff.place||"").toLowerCase()===selectedPlace;
+const haystack=[staff.name,staff.staffId,staff.phone,staff.jobType].join(" ").toLowerCase();
+const matchesSearch=searchTerm==="" || haystack.includes(searchTerm);
+return matchesPlace && matchesSearch;
+});
+
+if(filtered.length===0){
+staffTableBody.innerHTML='<tr><td colspan="7" class="emptyState">No staff found.</td></tr>';
+return;
+}
+
+staffTableBody.innerHTML=filtered.map(staff=>`
+<tr>
+<td><button class="nameBtn" data-id="${staff.id}">${staff.name||"-"}</button></td>
+<td>${staff.staffId||"-"}</td>
+<td>${staff.phone||"-"}</td>
+<td>${staff.jobType||"-"}</td>
+<td>Rs. ${Number(staff.salary||0).toLocaleString("en-IN")}</td>
+<td>${formatDate(staff.lastSalaryPaidDate)}</td>
+<td><button class="salaryBtn" data-salary-id="${staff.id}">Pay Salary</button></td>
+</tr>
+`).join("");
+}
+
+async function loadStaff(){
+staffTableBody.innerHTML='<tr><td colspan="7" class="emptyState">Loading staff...</td></tr>';
+
+const snapshot=await getDocs(collection(db,"staff"));
+
+staffData=snapshot.docs.map(item=>({
+id:item.id,
+...item.data()
+}));
+
+staffData.sort((a,b)=>{
+const aTime=a.createdAt && a.createdAt.seconds ? a.createdAt.seconds : 0;
+const bTime=b.createdAt && b.createdAt.seconds ? b.createdAt.seconds : 0;
+return bTime-aTime;
+});
+
+renderStaff();
+}
+
+function openSalaryModal(staffId){
+activeStaff=staffData.find(staff=>staff.id===staffId) || null;
+
+if(!activeStaff){
+showMessage("Staff data not found","error");
+return;
+}
+
+salaryModalSub.textContent=`${activeStaff.name||"Staff"} | ID: ${activeStaff.staffId||"-"}`;
+salaryAmount.value=activeStaff.salary||"";
+salaryModal.classList.add("show");
+}
+
+function closeSalaryPopup(){
+salaryModal.classList.remove("show");
+activeStaff=null;
+}
+
+async function paySalary(){
+if(!activeStaff){
+return;
+}
+
+const amountValue=Number(salaryAmount.value);
+
+if(!amountValue || amountValue<0){
+showMessage("Enter a valid salary amount","error");
+return;
+}
+
+try{
+await updateDoc(doc(db,"staff",activeStaff.id),{
+salary:Number(activeStaff.salary||amountValue),
+lastSalaryPaidAmount:amountValue,
+lastSalaryPaidDate:Timestamp.fromDate(new Date())
+});
+
+showMessage("Salary paid successfully","success");
+closeSalaryPopup();
+await loadStaff();
+}
+catch(error){
+showMessage(error.message,"error");
+}
+}
+
+function openDetailsModal(staffId){
+const staff=staffData.find(item=>item.id===staffId);
+
+if(!staff){
+showMessage("Staff data not found","error");
+return;
+}
+
+document.getElementById("detailsTitle").textContent=staff.name||"Staff Details";
+document.getElementById("detailsSub").textContent=`ID: ${staff.staffId||"-"} | Phone: ${staff.phone||"-"}`;
+document.getElementById("detailAddress").textContent=staff.address||"-";
+document.getElementById("detailAadhaar").textContent=staff.aadhaarNumber||"-";
+document.getElementById("detailPassword").textContent=staff.password||"-";
+document.getElementById("detailPlace").textContent=staff.place||"-";
+document.getElementById("detailPhotoWrap").innerHTML=renderImage(staff.photo);
+document.getElementById("detailAadhaarPhotoWrap").innerHTML=renderImage(staff.aadhaarPhoto);
+detailsModal.classList.add("show");
+}
+
+function closeDetailsPopup(){
+detailsModal.classList.remove("show");
+}
+
+searchBox.addEventListener("input",renderStaff);
+
+staffTableBody.addEventListener("click",e=>{
+const nameButton=e.target.closest(".nameBtn");
+const salaryButton=e.target.closest(".salaryBtn");
+
+if(nameButton){
+openDetailsModal(nameButton.dataset.id);
+}
+
+if(salaryButton){
+openSalaryModal(salaryButton.dataset.salaryId);
+}
+});
+
+closeSalaryModal.addEventListener("click",closeSalaryPopup);
+confirmSalaryBtn.addEventListener("click",paySalary);
+closeDetailsModal.addEventListener("click",closeDetailsPopup);
+
+salaryModal.addEventListener("click",e=>{
+if(e.target===salaryModal){
+closeSalaryPopup();
+}
+});
+
+detailsModal.addEventListener("click",e=>{
+if(e.target===detailsModal){
+closeDetailsPopup();
+}
+});
+
+await loadStaff();
+</script>
+</body>
+</html>
